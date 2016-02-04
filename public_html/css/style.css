@@ -1,0 +1,24 @@
+/* 
+    Created on : 04-feb-2016, 10:21:16
+    Author     : mor
+*/
+img {
+    width: auto;
+    height: auto;
+    max-width: 200px;
+    max-height: 200px;
+    opacity: 1;
+}
+
+.over {
+    opacity: 0.5;
+}
+
+.pick {
+    opacity: 0;
+}
+
+.systemBox {
+    float: left;
+}
+
