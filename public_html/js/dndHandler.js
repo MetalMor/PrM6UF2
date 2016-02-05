@@ -25,29 +25,6 @@ var levels = [
 
 var correctDrop = false;
 
-function getElementSrc(e) {
-    switch (e.target.id) {
-        case 'circle':
-            e.dataTransfer.setData('text',circle);
-            console.log('set ' + circle);
-            break;
-        case 'square':
-            e.dataTransfer.setData('text',square);
-            console.log('set ' + square);
-            break;
-        case 'triangle':
-            e.dataTransfer.setData('text',triangle);
-            console.log('set ' + triangle);
-            break;
-        case 'diamond':
-            e.dataTransfer.setData('text',diamond);
-            console.log('set ' + diamond);
-            break;
-        default:
-            console.log(e.target.id + ' not draggable D:');
-    }
-}
-
 // HANDLERS DE LES FIGURES PER JUGAR
 function playerDragStartHandler(e) { // AL COGER UN ELEMENTO DRAGNDROP
     // e.target o this és l'origen
