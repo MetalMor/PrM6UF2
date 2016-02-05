@@ -5,7 +5,7 @@
  * @author mor
  */
 
-var folder = "img/";
+var folder = "img/figure/";
 var ext = ".png";
 
 var circle = folder + "circle" + ext;
@@ -13,6 +13,7 @@ var square = folder + "square" + ext;
 var triangle = folder + "triangle" + ext;
 var diamond = folder + "diamond" + ext;
 
+var figureCp;
 
 var currentLevel = 1;
 var levels = [
@@ -24,13 +25,40 @@ var levels = [
 
 var correctDrop = false;
 
+function getElementSrc(e) {
+    switch (e.target.id) {
+        case 'circle':
+            e.dataTransfer.setData('text',circle);
+            console.log('set ' + circle);
+            break;
+        case 'square':
+            e.dataTransfer.setData('text',square);
+            console.log('set ' + square);
+            break;
+        case 'triangle':
+            e.dataTransfer.setData('text',triangle);
+            console.log('set ' + triangle);
+            break;
+        case 'diamond':
+            e.dataTransfer.setData('text',diamond);
+            console.log('set ' + diamond);
+            break;
+        default:
+            console.log(e.target.id + ' not draggable D:');
+    }
+}
+
 // HANDLERS DE LES FIGURES PER JUGAR
-function playerDragStartHandler(i) { // AL COGER UN ELEMENTO DRAGNDROP
+function playerDragStartHandler(e) { // AL COGER UN ELEMENTO DRAGNDROP
     // e.target o this és l'origen
-    if(!this.classList.hasOwnProperty('pick'))
+    if(!this.classList.contains('pick')) {
         this.classList.add('pick');
+        figureCp = this.id;
+        //getElementSrc(e);
+    }
     
-    console.log(this.id + ' drag start: ' + this.classList.toString());
+    console.log(this.id + ' drag start: ' + this.classList.toString()
+            + '; img id=' + figureCp);
 }
 
 function playerDragEndHandler(e) { // LO QUE LE PASA AL ELEMENTO QUE HAS COGIDO CUANDO LO SUELTAS
@@ -46,7 +74,7 @@ function playerDragEndHandler(e) { // LO QUE LE PASA AL ELEMENTO QUE HAS COGIDO 
 function systemDragOverHandler(e) { // AL PASAR POR ENCIMA DE OTRO ELEMENTO DRAGNDROP
     // e.target o this és el desti
     
-    if (!this.classList.contains("systemBox")) {
+    if (this.classList.contains("systemBox")) {
         if (e.preventDefault) {
             // evita otras movidas del comportamiento de la página, como los hipervínculos 
             // (sino alomejor al pasar por encima te envia para otra página, y no queremos eso D: )
@@ -54,7 +82,8 @@ function systemDragOverHandler(e) { // AL PASAR POR ENCIMA DE OTRO ELEMENTO DRAG
         }
         
         e.dataTransfer.dropEffect = 'move';
-        console.log('drag over ' + this.id + ': ' + this.classList.toString());
+        console.log(this.id + ' drag over: ' + this.classList.toString() + '; ' + 
+                figureCp + ' to copy');
         return false;
     }
 }
@@ -77,12 +106,9 @@ function systemDragLeaveHandler(e) { // AL SALIR DEL "TERRITORIO" DE OTRO ELEMEN
 function systemDropHandler(e) { // LO QUE LE PASA AL ELEMENTO EN EL CUAL SUELTAS LA MOVIDA
     //e.target o this és el desti
 
-    var pickedElement = document.getElementsByClassName('pick')[0];
-    console.log('imatge: ' + pickedElement.src);
-
-    if (this.classList.contains("playerBox")) {
-        this.setAttribute("src", pickedElement.src);
-    }
+    console.log('data: ' + e.dataTransfer.getData('text'));
+    e.target.appendChild(document.getElementById(figureCp));
+    //this.setAttribute("src", e.dataTransfer.getData('text'));
     
     this.classList.remove('over');
     if (e.stopPropagation) {
@@ -91,14 +117,13 @@ function systemDropHandler(e) { // LO QUE LE PASA AL ELEMENTO EN EL CUAL SUELTAS
 
     console.log('drop on ' + this.id + ': ' + this.classList.toString());
     
-    return false;
-    
 }
 
 function setDndHandlers(items) {
     [].forEach.call(items, function (item) {
         item.addEventListener('dragstart', playerDragStartHandler, false);
         item.addEventListener('dragend', playerDragEndHandler, false);
+        console.log(item.id + ' set');
     });
 }
 
@@ -108,18 +133,6 @@ function setSystemBoxHandlers(items) {
         item.addEventListener('dragover', systemDragOverHandler, false);
         item.addEventListener('dragleave', systemDragLeaveHandler, false);
         item.addEventListener('drop', systemDropHandler, false);
+        console.log(item.id + ' set');
     });
 }
-
-window.onload = function () {
-
-    var playerItems = document.querySelectorAll('.playerBox');
-    var systemItems = document.querySelectorAll('.systemBox');
-    
-    // ASSIGNA LISTENERS ALS ELEMENTS DIV
-    setDndHandlers(playerItems);
-    setSystemBoxHandlers(systemItems);
-    
-    
-
-};

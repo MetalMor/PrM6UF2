@@ -10,16 +10,21 @@ HTML FIGURES DRAG'N'DROP
         <link rel="shortcut icon" href="favicon.ico">
         <link rel="stylesheet" href="css/style.css">
         <script type="text/javascript" src="js/dndHandler.js" ></script>
+        <script type="text/javascript" src="js/main.js" ></script>
     </head>
     <body>
-        <img id="circle" class="playerBox" src="img/circle.png" draggable="true" />
-        <img id="square" class="playerBox" src="img/square.png" draggable="true" />
-        <img id="triangle" class="playerBox" src="img/triangle.png" draggable="true" />
-        <img id="diamond" class="playerBox" src="img/diamond.png" draggable="true" />
-        <BR/><BR/>
-        <img id="sb01" class="systemBox" draggable="true" src="img/circle.png" />
-        <img id="sb02" class="systemBox" draggable="true" src="img/circle.png" />
-        <img id="sb03" class="systemBox" draggable="true" src="img/circle.png" />
-        <img id="sb04" class="systemBox" draggable="true" src="img/circle.png" />
+        <div class="global" >
+            <div id="sb01" class="systemBox" ></div>
+            <div id="sb02" class="systemBox" ></div>
+            <div id="sb03" class="systemBox" ></div>
+            <div id="sb04" class="systemBox" ></div>
+        </div>
+        <BR/>
+        <div class="global" >
+            <img id="circle" class="playerBox" src="img/circle.png" draggable="true" />
+            <img id="square" class="playerBox" src="img/square.png" draggable="true" />
+            <img id="triangle" class="playerBox" src="img/triangle.png" draggable="true" />
+            <img id="diamond" class="playerBox" src="img/diamond.png" draggable="true" />
+        </div>
     </body>
 </html>
