@@ -67,8 +67,10 @@ function systemDragOverHandler(e) { // AL PASAR POR ENCIMA DE OTRO ELEMENTO DRAG
 
 function systemDragEnterHandler(e) { // AL ENTRAR EN EL "TERRITORIO" DE OTRO ELEMENTO DRAGNDROP
     //e.target o this és el desti
-    this.classList.add('over'); // le pone la clase over al div para q el css haga algo
-    console.log('drag enter ' + this.id + ': ' + this.classList.toString());
+    if (this.childNodes.length === 0) {
+        this.classList.add('over'); // le pone la clase over al div para q el css haga algo
+        console.log('drag enter ' + this.id + ': ' + this.classList.toString());
+    }
     
 }
 
@@ -83,16 +85,23 @@ function systemDragLeaveHandler(e) { // AL SALIR DEL "TERRITORIO" DE OTRO ELEMEN
 function systemDropHandler(e) { // LO QUE LE PASA AL ELEMENTO EN EL CUAL SUELTAS LA MOVIDA
     //e.target o this és el desti
 
-    console.log('data: ' + e.dataTransfer.getData('text'));
-    e.target.appendChild(document.getElementById(figureCp));
-    //this.setAttribute("src", e.dataTransfer.getData('text'));
+    //console.log('data: ' + e.dataTransfer.getData('text'));
+    if (this.childNodes.length <= 0) { // si el destino no tiene una imagen asociada
+        
+        this.appendChild(document.getElementById(figureCp));
+        this.childNodes[0].setAttribute("draggable", false);
+        //this.setAttribute("src", e.dataTransfer.getData('text'));
+
+        if (e.stopPropagation) {
+            e.stopPropagation();
+        }
+
+        console.log('drop on ' + this.id + ': ' + this.classList.toString());
+    }
+    else
+        console.log(e.target.childNodes[0].text);
     
     this.classList.remove('over');
-    if (e.stopPropagation) {
-        e.stopPropagation();
-    }
-
-    console.log('drop on ' + this.id + ': ' + this.classList.toString());
     
 }
 
