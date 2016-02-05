@@ -9,7 +9,7 @@ img {
     max-height: 200px;
     opacity: 1;
     float: right;
-    
+    alignment-adjust: central;
 }
 
 div.systemBox {
