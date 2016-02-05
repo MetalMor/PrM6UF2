@@ -5,37 +5,20 @@
  * @author mor
  */
 
-var folder = "img/figure/";
-var ext = ".png";
-
-var circle = folder + "circle" + ext;
-var square = folder + "square" + ext;
-var triangle = folder + "triangle" + ext;
-var diamond = folder + "diamond" + ext;
-
-var figureCp;
-
-var currentLevel = 1;
-var levels = [
-    figureArraySrc01 = [circle, square, triangle, diamond],
-    figureArraySrc02 = [diamond, diamond, diamond, diamond],
-    figureArraySrc03 = [triangle, square, triangle, square],
-    figureArraySrc04 = [diamond, triangle, square, circle]
-]
-
 var correctDrop = false;
+var figureToCopy;
 
 // HANDLERS DE LES FIGURES PER JUGAR
 function playerDragStartHandler(e) { // AL COGER UN ELEMENTO DRAGNDROP
     // e.target o this és l'origen
     if(!this.classList.contains('pick')) {
         this.classList.add('pick');
-        figureCp = this.id;
+        figureToCopy = this.id;
         //getElementSrc(e);
     }
     
     console.log(this.id + ' drag start: ' + this.classList.toString()
-            + '; img id=' + figureCp);
+            + '; img id=' + figureToCopy);
 }
 
 function playerDragEndHandler(e) { // LO QUE LE PASA AL ELEMENTO QUE HAS COGIDO CUANDO LO SUELTAS
@@ -60,7 +43,7 @@ function systemDragOverHandler(e) { // AL PASAR POR ENCIMA DE OTRO ELEMENTO DRAG
         
         e.dataTransfer.dropEffect = 'move';
         console.log(this.id + ' drag over: ' + this.classList.toString() + '; ' + 
-                figureCp + ' to copy');
+                figureToCopy + ' to copy');
         return false;
     }
 }
@@ -88,7 +71,7 @@ function systemDropHandler(e) { // LO QUE LE PASA AL ELEMENTO EN EL CUAL SUELTAS
     //console.log('data: ' + e.dataTransfer.getData('text'));
     if (this.childNodes.length <= 0) { // si el destino no tiene una imagen asociada
         
-        this.appendChild(document.getElementById(figureCp));
+        this.appendChild(document.getElementById(figureToCopy));
         this.childNodes[0].setAttribute("draggable", false);
         //this.setAttribute("src", e.dataTransfer.getData('text'));
 
@@ -98,8 +81,6 @@ function systemDropHandler(e) { // LO QUE LE PASA AL ELEMENTO EN EL CUAL SUELTAS
 
         console.log('drop on ' + this.id + ': ' + this.classList.toString());
     }
-    else
-        console.log(e.target.childNodes[0].text);
     
     this.classList.remove('over');
     
