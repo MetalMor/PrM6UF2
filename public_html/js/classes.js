@@ -1,48 +1,67 @@
-/* global lvl */
-
 /**
- * JAVASCRIPT FIGURES LEVELS
+ * JAVASCRIPT DRAG'N'DROP CLASSES
  * 
- * No implementat :(
+ * Fitxer amb els constructors necessaris
  * 
  * 050216
  * @author mor
  */
-function ImageSet(_folder, _ext) {
-    this.circle = _folder + "circle" + _ext;
-    this.square = _folder + "square" + _ext;
-    this.triangle = _folder + "triangle" + _ext;
-    this.diamond = _folder + "diamond" + _ext;
+
+// constructor de les diferents imatges que necessita el programa
+function ImageSet(folder, ext) {
+    this.circle = folder + "circle" + ext;
+    console.log('circle: ' + this.circle);
+    this.square = folder + "square" + ext;
+    console.log('square: ' + this.square);
+    this.triangle = folder + "triangle" + ext;
+    console.log('triangle: ' + this.triangle);
+    this.diamond = folder + "diamond" + ext;
+    console.log('diamond: ' + this.diamond);
 }
 
+// constructor del conjunt de figures utilitzades pel programa
 function FigureSet(_folder, _ext) {
-    this.folder = _folder;
+    this.folder = _folder; // per si de cas guarda carpeta i extensió (?)(?)
     this.ext = _ext;
     this.images = new ImageSet(_folder, _ext);
-    this.addFigureImage = function (_node, _figure) {
-        
-        var figureElement = document.createElement("img");
-        figureElement.setAttribute("src", _figure);
-        _node.appendChild(figureElement);
-        
-    };
-    this.loadImages = function (_currLvl) {
-        
-        var nodeList = document.getElementsByClassName('staticSystemBox');
-        var counter = 0;
-        
-        for (_divNode in nodeList)
-            addFigureImage(_divNode, _currLvl.figures[counter++]);
-        
-    };
-};
+    console.log('all images loaded');
+    this.addFigure = function (node, figure) {
 
-function Level(_number, _figures) {
-    this.number = _number;
-    this.figures = _figures;
+        var _reqdId = node.id;
+        var _figureElement = document.createElement('img');
+        var _figureSrc = figure;
+        
+        _figureElement.setAttribute('src', _figureSrc);
+        
+        console.log('src: ' + _figureElement.src);
+        document.getElementById(_reqdId).appendChild(_figureElement);
+        
+    };
+    this.loadImages = function (currLvl) {
+
+        var _nodeList = document.getElementsByClassName('staticSystemBox');
+        var _currentLevel = currLvl;
+
+        for (var counter = 0;
+                counter < _nodeList.length;
+                counter++) {
+            console.log('current node: ' + _nodeList.item(counter).id);
+            console.log('current figure: ' + _currentLevel.figures[counter]);
+            this.addFigure(_nodeList.item(counter), _currentLevel.figures[counter]);
+        }
+
+    };
 }
 
-function LevelSet() {
+// Constructor d'un objecte nivell individual
+function Level(number, figures) {
+    this.number = number;
+    this.figures = figures;
+    console.log('loaded level ' + this.number);
+}
+
+// Constructor dels diferents nivells del joc
+function LevelList(figures) {
     this.one = new Level(1, [
         figures.images.circle,
         figures.images.square,
@@ -69,217 +88,170 @@ function LevelSet() {
     ]);
 }
 
+// Constructor de l'objecte partida
 function Game(_figureSet) {
     this.key = "any";
     this.currentLevel = 0;
-    this.figures = new FigureSet();
-    this.levels = new LevelSet();
+    this.levels = new LevelList(_figureSet);
+    this.figures = _figureSet;
+    console.log('loaded levels');
+    
+    // Mira de carregar el següent nivell
     this.loadLevel = function () {
+
+        var _levelList = this.levels;
+        var lvl;
 
         this.setCurrentLevel();
         console.log("loading level " + this.currentLevel);
+        
+        for (lvl in _levelList) {
 
-        var levelList = this.levels;
+            console.log('level ' + _levelList[lvl].number + '?');
+            if (_levelList[lvl].number == this.currentLevel) {
+                console.log('yup! loading :D lvl ' + _levelList[lvl].number);
+                this.figures.loadImages(_levelList[lvl]);
+                this.setKey(_levelList[lvl]);
+                console.log(this.key);
 
-        for (lvl in levelList) {
-            
-            console.log('level ' + lvl.number + '?');
-            if (lvl.number === this.currentLevel) {
-                
-                console.log('yup! loading :D lvl ' + lvl.number);
-                figures.loadImages();
-                this.setKey(lvl);
-                
-                
             } else {
-                console.log('no :(');
+                console.log('nope :(');
             }
 
         }
 
+    };
+
+    // Estableix l'últim objecte figura de l'array com a solució del joc.
+    this.setKey = function (lvl) {
+
+        var lastFigure = lvl.figures.length - 1;
+        key = lvl.figures[lastFigure];
+
     }
-    
-    this.setKey = function (_lvl) {
-        
-        var lastFigure = _lvl.figures.length - 1;
-        key = _lvl.figures[lastFigure];
-        
-    }
-    
-    this.setCurrentLevel = function() {
-        
+
+    // Funció que canvia al següent nivell. En cas d'estar a l'últim, torna
+    // a començar pel primer.
+    this.setCurrentLevel = function () {
+
         this.currentLevel < 4 ?
-            this.currentLevel++ :
-            this.currentLevel = 1;
-    
+                this.currentLevel++ :
+                this.currentLevel = 1;
+
     }
-    
+
 }
 
-var figures = {
-    
-    folder: "img/figure/",
-    ext: ".png",
-    
-    images: {
-        circle: folder + "circle" + ext,
-        square: folder + "square" + ext,
-        triangle: folder + "triangle" + ext,
-        diamond: folder + "diamond" + ext
-    },
-    
-    addFigureImage: function (_node, _figure) {
-        
-        var figureElement = document.createElement("img");
-        figureElement.setAttribute("src", _figure);
-        _node.appendChild(figureElement);
-        
-    },
-    
-    loadImages: function (_currLvl) {
-        
-        var nodeList = document.getElementsByClassName('staticSystemBox');
-        var counter = 0;
-        
-        for (_divNode in nodeList)
-            addFigureImage(_divNode, _currLvl.figures[counter++]);
-        
-    }
+function DndHandler(_folder, _ext) {
 
-};
+    var figureToCopy = "anyNodeElement";
+    this.figureToCopy = figureToCopy;
+    
+    // instància de l'objecte partida
+    this.game = new Game(new FigureSet(_folder, _ext));
 
-var game = {
-    
-    key: "any",
-    
-    currentLevel: 0,
-    
-    levels: {
-        
-        one: {
-            
-            number: 1,
-            figures: [figures.circle, figures.square, figures.triangle, figures.diamond]
-            
-        },
-        
-        two: {
-            
-            number: 2,
-            figures: [figures.diamond, figures.diamond, figures.square, figures.square]
-            
-        },
-        
-        three: {
-            
-            number: 3,
-            figures: [figures.triangle, figures.circle, figures.triangle, figures.circle]
-            
-        },
-        
-        four: {
-            
-            number: 4,
-            figures: [figures.triangle, figures.triangle, figures.triangle, figures.triangle]
-            
+    // FUNCIONS MANEGADORES DE L'API DRAG'N'DROP
+    this.playerDragStart = function  (e) { // AL COGER UN ELEMENTO DRAGNDROP
+        // e.target o this és l'origen
+        if (!e.target.classList.contains('pick')) {
+            e.target.classList.add('pick');
+            this.figureToCopy = e.target;
         }
-        
-    },
-    
-    loadLevel: function () {
 
-        this.setCurrentLevel();
+        console.log(e.target.id + ' drag start: ' + e.target.classList.toString()
+                + '; img id=' + this.figureToCopy.id);
+    };
 
-        for (lvl in this.levels) {
-            
-            if (lvl.number === this.currentLevel) {
-                
-                figures.loadImages();
-                this.setKey(lvl);
-                
+    this.playerDragEnd = function (e) { // LO QUE LE PASA AL ELEMENTO QUE HAS COGIDO CUANDO LO SUELTAS
+
+        //e.target o this és l'origen
+        e.target.classList.remove('pick');
+        e.target.classList.remove('over');
+        console.log('dragend ' + e.target.id + ': ' + e.target.classList.toString());
+
+    };
+
+    this.systemDragEnter = function (e) { // AL ENTRAR EN EL "TERRITORIO" DE OTRO ELEMENTO DRAGNDROP
+        //e.target o this és el desti
+        if (e.target.childNodes.length === 0) {
+            e.target.classList.add('over'); // le pone la clase over al div para q el css haga algo
+            console.log('drag enter ' + e.target.id + ': ' + e.target.classList.toString());
+        }
+
+    };
+
+    this.systemDragOver = function (e) { // AL PASAR POR ENCIMA DE OTRO ELEMENTO DRAGNDROP
+        // e.target o this és el desti
+
+        if (e.target.classList.contains("systemBox")) {
+            if (e.preventDefault) {
+                // evita otras movidas del comportamiento de la página, como los hipervínculos 
+                // (sino alomejor al pasar por encima te envia para otra página, y no queremos eso D: )
+                e.preventDefault();
             }
 
+            e.dataTransfer.dropEffect = 'move';
+            console.log(e.target.id + ' drag over: ' + e.target.classList.toString() + '; ' +
+                    this.figureToCopy.id + ' to copy');
+            return false;
+        }
+    };
+
+    this.systemDragLeave = function (e) { // AL SALIR DEL "TERRITORIO" DE OTRO ELEMENTO DRAGNDROP
+        //e.target o this és el desti
+        e.target.classList.remove('over'); // le quita la clase over al div para q el css haga algo
+
+        console.log('drag leave ' + e.target.id + ': ' + e.target.classList.toString());
+    };
+
+    this.systemDrop = function (e) { // LO QUE LE PASA AL ELEMENTO EN EL CUAL SUELTAS LA MOVIDA
+        //e.target o this és el desti
+
+        //console.log('data: ' + e.dataTransfer.getData('text'));
+        if (e.target.childNodes.length <= 0 &&
+                this.figureToCopy.src === this.game.key) { // si el destino no tiene una imagen asociada
+
+            e.target.appendChild(document.getElementById(this.figureToCopy));
+            e.target.childNodes[0].setAttribute("draggable", false);
+            //this.setAttribute("src", e.dataTransfer.getData('text'));
+
+            if (e.stopPropagation) {
+                e.stopPropagation();
+            }
+
+            console.log('drop on ' + e.target.id + ': ' + e.target.classList.toString());
+            document.getElementById("newGame").setAttribute("type", "button");
         }
 
-    },
-    
-    setKey: function (_lvl) {
-        
-        var lastFigure = _lvl.figures.length - 1;
-        key = _lvl.figures[lastFigure];
-        
-    },
+        e.target.classList.remove('over');
 
-    setCurrentLevel: function() {
-        
-        this.currentLevel < 4 ?
-            this.currentLevel++ :
-            this.currentLevel = 1;
-    
-    }
+    };
 
-};
+    // Afegeix els handlers com a listeners d'HTML5
+    this.setFigures = function (items) {
 
+        [].forEach.call(items, function (item) {
+            item.addEventListener('dragstart', this.playerDragStart, false);
+            item.addEventListener('dragend', this.playerDragEnd, false);
+            console.log(item.id + ' set');
+        });
 
+    };
 
-/*
- var currentLevel = 1;
- 
- var levels = {
- 
- level01: { 
- code: 1,
- figures: [circle, square, triangle, diamond] 
- },
- level02: { 
- code: 2,
- figures: [diamond, diamond, diamond, diamond] 
- },
- level03: {
- code: 3,
- figures: [triangle, square, triangle, square] 
- },
- level04: { 
- code: 4,
- figures: [diamond, triangle, square, circle] 
- }
- }
- 
- function addFigureElement(element, figure) {
- document.getElementById(element).appendChild(
- document.createElement('img').setAttribute('src', figure)
- );
- }
- 
- function setLevel() {
- var parent = document.getElementById('system');
- var counter = 0;
- for (var node in parent.getElementsByTagName('div')) {
- console.log('setting image' + node.id);
- if (node.hasOwnProperty('name'))
- addFigureElement(node, levels.level01.figures[counter]);
- counter++;
- }
- }
- 
- function setLevel() {
- 
- var lv = currentLevel - 1;
- var divElement;
- var figure;
- var counter;
- 
- console.log('setting level');
- 
- for (counter = 0; counter === 2; counter++) {
- 
- console.log('level ' + currentLevel);
- 
- divElement = 'sb0' + (counter + 1);
- figure = levels[lv][counter];
- 
- addFigureElement(divElement, figure);
- 
- }
- 
- }*/
+    // Afegeix els handlers com a listeners d'HTML5
+    this.setSystemBoxes = function (items) {
+
+        /*document.getElementById("newGame")
+                .addEventListener("onclick", this.game.loadLevel(), false);*/
+
+        [].forEach.call(items, function (item) {
+            item.addEventListener('dragenter', this.systemDragEnterHandler, false);
+            item.addEventListener('dragover', this.systemDragOverHandler, false);
+            item.addEventListener('dragleave', this.systemDragLeaveHandler, false);
+            item.addEventListener('drop', this.systemDropHandler, false);
+            console.log(item.id + ' set');
+        });
+
+    };
+
+}
