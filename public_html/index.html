@@ -10,15 +10,14 @@ HTML FIGURES DRAG'N'DROP
         <link rel="shortcut icon" href="img/icon/favicon.ico">
         <link rel="stylesheet" href="css/style.css">
         <script type="text/javascript" src="js/dndHandler.js" ></script>
-        <script type="text/javascript" src="js/levels.js" ></script>
         <script type="text/javascript" src="js/main.js" ></script>
     </head>
     <body>
         <div id="system" class="global">
-            <div id="sb01" class="systemBox" ></div>
-            <div id="sb02" class="systemBox" ></div>
-            <div id="sb03" class="systemBox" ></div>
-            <div id="sb04" name="solution" class="systemBox" ></div>
+            <div id="sb01" class="staticSystemBox" ></div>
+            <div id="sb02" class="staticSystemBox" ></div>
+            <div id="sb03" class="staticSystemBox" ></div>
+            <div id="sb04" class="systemBox" ></div>
         </div>
         <BR/>
         <div id="player" class="global" >
@@ -27,5 +26,7 @@ HTML FIGURES DRAG'N'DROP
             <img id="triangle" class="playerBox" draggable="true" src="img/figure/triangle.png" />
             <img id="diamond" class="playerBox" draggable="true" src="img/figure/diamond.png" />
         </div>
+        <br>
+        <input id="newGame" type="hidden" value="Inici" onclick="game.loadLevel()"/>
     </body>
 </html>
