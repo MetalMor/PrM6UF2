@@ -12,6 +12,15 @@ img {
     alignment-adjust: central;
 }
 
+div.system div {
+    width: 200px;
+    height: 200px;
+    background-color: burlywood;
+    padding: 10px;
+    border: 5px solid #000000;
+    float: left;
+}
+
 div.systemBox {
     width: 200px;
     height: 200px;

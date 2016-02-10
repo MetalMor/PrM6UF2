@@ -8,7 +8,9 @@
  */
 
 // constructor de les diferents imatges que necessita el programa
-function ImageSet(folder, ext) {
+var ImageSrcSet = function () {
+    var folder = 'img/figures/';
+    var ext = '.png';
     this.circle = folder + "circle" + ext;
     console.log('circle: ' + this.circle);
     this.square = folder + "square" + ext;
@@ -17,25 +19,23 @@ function ImageSet(folder, ext) {
     console.log('triangle: ' + this.triangle);
     this.diamond = folder + "diamond" + ext;
     console.log('diamond: ' + this.diamond);
-}
+};
 
 // constructor del conjunt de figures utilitzades pel programa
-function FigureSet(_folder, _ext) {
-    this.folder = _folder; // per si de cas guarda carpeta i extensió (?)(?)
-    this.ext = _ext;
-    this.images = new ImageSet(_folder, _ext);
+var FigureSet = function () {
+    this.images = new ImageSrcSet();
     console.log('all images loaded');
     this.addFigure = function (node, figure) {
 
         var _reqdId = node.id;
         var _figureElement = document.createElement('img');
         var _figureSrc = figure;
-        
+
         _figureElement.setAttribute('src', _figureSrc);
-        
+
         console.log('src: ' + _figureElement.src);
         document.getElementById(_reqdId).appendChild(_figureElement);
-        
+
     };
     this.loadImages = function (currLvl) {
 
@@ -49,19 +49,19 @@ function FigureSet(_folder, _ext) {
             console.log('current figure: ' + _currentLevel.figures[counter]);
             this.addFigure(_nodeList.item(counter), _currentLevel.figures[counter]);
         }
-
+        ;
     };
-}
-
+    
+};
 // Constructor d'un objecte nivell individual
-function Level(number, figures) {
+var Level = function (number, figures) {
     this.number = number;
     this.figures = figures;
     console.log('loaded level ' + this.number);
-}
+};
 
 // Constructor dels diferents nivells del joc
-function LevelList(figures) {
+var LevelList = function (figures) {
     this.one = new Level(1, [
         figures.images.circle,
         figures.images.square,
@@ -86,16 +86,16 @@ function LevelList(figures) {
         figures.images.triangle,
         figures.images.triangle
     ]);
-}
+};
 
 // Constructor de l'objecte partida
-function Game(_figureSet) {
+var Game = function (_figureSet) {
     this.key = "any";
     this.currentLevel = 0;
     this.levels = new LevelList(_figureSet);
     this.figures = _figureSet;
     console.log('loaded levels');
-    
+
     // Mira de carregar el següent nivell
     this.loadLevel = function () {
 
@@ -104,7 +104,7 @@ function Game(_figureSet) {
 
         this.setCurrentLevel();
         console.log("loading level " + this.currentLevel);
-        
+
         for (lvl in _levelList) {
 
             console.log('level ' + _levelList[lvl].number + '?');
@@ -128,30 +128,27 @@ function Game(_figureSet) {
         var lastFigure = lvl.figures.length - 1;
         key = lvl.figures[lastFigure];
 
-    }
+    };
 
     // Funció que canvia al següent nivell. En cas d'estar a l'últim, torna
     // a començar pel primer.
-    this.setCurrentLevel = function () {
+    this.setCurrentLevel = function setCurrentLevel() {
 
         this.currentLevel < 4 ?
                 this.currentLevel++ :
                 this.currentLevel = 1;
 
-    }
+    };
 
-}
+};
 
-function DndHandler(_folder, _ext) {
+var DndHandler = function () {
 
     var figureToCopy = "anyNodeElement";
     this.figureToCopy = figureToCopy;
-    
-    // instància de l'objecte partida
-    this.game = new Game(new FigureSet(_folder, _ext));
 
     // FUNCIONS MANEGADORES DE L'API DRAG'N'DROP
-    this.playerDragStart = function  (e) { // AL COGER UN ELEMENTO DRAGNDROP
+    this.playerDragStart = function (e) { // AL COGER UN ELEMENTO DRAGNDROP
         // e.target o this és l'origen
         if (!e.target.classList.contains('pick')) {
             e.target.classList.add('pick');
@@ -242,7 +239,7 @@ function DndHandler(_folder, _ext) {
     this.setSystemBoxes = function (items) {
 
         /*document.getElementById("newGame")
-                .addEventListener("onclick", this.game.loadLevel(), false);*/
+         .addEventListener("onclick", this.game.loadLevel(), false);*/
 
         [].forEach.call(items, function (item) {
             item.addEventListener('dragenter', this.systemDragEnterHandler, false);
@@ -254,4 +251,9 @@ function DndHandler(_folder, _ext) {
 
     };
 
-}
+};
+
+var FigureGame = function () {
+    this.game = new Game(new FigureSet());
+    this.dndHandler = new DndHandler();
+};
