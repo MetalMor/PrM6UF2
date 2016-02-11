@@ -1,33 +1,27 @@
+
 <!DOCTYPE html>
-<!--
-HTML FIGURES DRAG'N'DROP
--->
 <html>
     <head>
-        <title>Drag'n'Drop - Joel G. Fdez</title>
+        <title>Drag'n'Drop - Joel G. Fernándeath</title>
         <meta charset="UTF-8">
         <meta name="author" content="mor">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="shortcut icon" href="img/icon/favicon.ico">
         <link rel="stylesheet" href="css/style.css">
+        <link rel="shortcut icon" href="img/icon/favicon.ico">
+        <script type="text/javascript" src="js/functions.js"></script>
     </head>
-    <body onload="main()">
-        <div id="system" class="global">
-            <div id="sb01" class="staticSystemBox" > </div>
-            <div id="sb02" class="staticSystemBox" > </div>
-            <div id="sb03" class="staticSystemBox" > </div>
-            <div id="sb04" class="systemBox" > </div>
+    <body>
+        <h1>JOC DE FIGURES: troba la figura correcta en cada cas</h1>
+        <form action='game.html'>
+            <label>Clica al botó per començar:</label><br>
+            <input type="submit" value="Començar" />
+        </form>
+        <div id="gameOver" class="hidden" >
+            <h1>Final del joc!</h1><p>Resultats:</p><br>
+            <label>Nivell 01: </label><div id="level01" class="result" ></div><br>
+            <label>Nivell 02: </label><div id="level02" class="result" ></div><br>
+            <label>Nivell 03: </label><div id="level03" class="result" ></div><br>
+            <label>Nivell 04: </label><div id="level04" class="result" ></div><br>
         </div>
-        <BR/>
-        <div id="player" class="global" >
-            <img id="circle" class="playerBox" draggable="true" src="img/figure/circle.png" />
-            <img id="square" class="playerBox" draggable="true" src="img/figure/square.png" />
-            <img id="triangle" class="playerBox" draggable="true" src="img/figure/triangle.png" />
-            <img id="diamond" class="playerBox" draggable="true" src="img/figure/diamond.png" />
-        </div>
-        <br>
-        <input id="newGame" type="Button" value="Inici" />
-        <!--<script type="text/javascript" src="js/classes.js" ></script>-->
-        <script type="text/javascript" src="js/main.js" ></script>
     </body>
 </html>

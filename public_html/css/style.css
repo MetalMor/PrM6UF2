@@ -2,7 +2,7 @@
     Created on : 04-feb-2016, 10:21:16
     Author     : mor
 */
-img {
+div div img {
     width: auto;
     height: auto;
     max-width: 200px;
@@ -12,22 +12,18 @@ img {
     alignment-adjust: central;
 }
 
-div.system div {
+div.system {
     width: 200px;
     height: 200px;
     background-color: burlywood;
     padding: 10px;
     border: 5px solid #000000;
     float: left;
+    display: inline;
 }
 
-div.systemBox {
-    width: 200px;
-    height: 200px;
-    background-color: burlywood;
-    padding: 10px;
-    border: 5px solid #000000;
-    float: left;
+.hidden {
+    display: none;
 }
 
 .over {

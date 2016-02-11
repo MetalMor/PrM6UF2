@@ -7,156 +7,119 @@
  * @author mor
  */
 
-// constructor de les diferents imatges que necessita el programa
-var ImageSrcSet = function () {
-    var folder = 'img/figures/';
-    var ext = '.png';
-    this.circle = folder + "circle" + ext;
-    console.log('circle: ' + this.circle);
-    this.square = folder + "square" + ext;
-    console.log('square: ' + this.square);
-    this.triangle = folder + "triangle" + ext;
-    console.log('triangle: ' + this.triangle);
-    this.diamond = folder + "diamond" + ext;
-    console.log('diamond: ' + this.diamond);
-};
+function Figure(folder, name, ext) {
+    this.name = name;
+    this.src = folder + name + ext;
+}
 
-// constructor del conjunt de figures utilitzades pel programa
-var FigureSet = function () {
-    this.images = new ImageSrcSet();
-    console.log('all images loaded');
-    this.addFigure = function (node, figure) {
-
-        var _reqdId = node.id;
-        var _figureElement = document.createElement('img');
-        var _figureSrc = figure;
-
-        _figureElement.setAttribute('src', _figureSrc);
-
-        console.log('src: ' + _figureElement.src);
-        document.getElementById(_reqdId).appendChild(_figureElement);
-
-    };
-    this.loadImages = function (currLvl) {
-
-        var _nodeList = document.getElementsByClassName('staticSystemBox');
-        var _currentLevel = currLvl;
-
-        for (var counter = 0;
-                counter < _nodeList.length;
-                counter++) {
-            console.log('current node: ' + _nodeList.item(counter).id);
-            console.log('current figure: ' + _currentLevel.figures[counter]);
-            this.addFigure(_nodeList.item(counter), _currentLevel.figures[counter]);
-        }
-        ;
-    };
-    
-};
-// Constructor d'un objecte nivell individual
-var Level = function (number, figures) {
-    this.number = number;
-    this.figures = figures;
-    console.log('loaded level ' + this.number);
-};
-
-// Constructor dels diferents nivells del joc
-var LevelList = function (figures) {
-    this.one = new Level(1, [
-        figures.images.circle,
-        figures.images.square,
-        figures.images.triangle,
-        figures.images.diamond
-    ]);
-    this.two = new Level(2, [
-        figures.images.diamond,
-        figures.images.diamond,
-        figures.images.square,
-        figures.images.square
-    ]);
-    this.three = new Level(3, [
-        figures.images.triangle,
-        figures.images.circle,
-        figures.images.triangle,
-        figures.images.circle
-    ]);
-    this.four = new Level(4, [
-        figures.images.triangle,
-        figures.images.triangle,
-        figures.images.triangle,
-        figures.images.triangle
-    ]);
-};
-
-// Constructor de l'objecte partida
-var Game = function (_figureSet) {
-    this.key = "any";
+function Game() {
     this.currentLevel = 0;
-    this.levels = new LevelList(_figureSet);
-    this.figures = _figureSet;
-    console.log('loaded levels');
-
-    // Mira de carregar el següent nivell
-    this.loadLevel = function () {
-
-        var _levelList = this.levels;
-        var lvl;
-
-        this.setCurrentLevel();
-        console.log("loading level " + this.currentLevel);
-
-        for (lvl in _levelList) {
-
-            console.log('level ' + _levelList[lvl].number + '?');
-            if (_levelList[lvl].number == this.currentLevel) {
-                console.log('yup! loading :D lvl ' + _levelList[lvl].number);
-                this.figures.loadImages(_levelList[lvl]);
-                this.setKey(_levelList[lvl]);
-                console.log(this.key);
-
-            } else {
-                console.log('nope :(');
-            }
-
+    this.completedLevel = true;
+    this.key = "any";
+    this.figures = new FigureSet();
+    this.figureList = [
+        this.figures.circle,
+        this.figures.square,
+        this.figures.triangle,
+        this.figures.diamond
+    ];
+    this.solutionList = [
+        this.figures.diamond,
+        this.figures.circle,
+        this.figures.triangle,
+        this.figures.square
+    ];
+    this.setKey = function () {
+        var curLvl = this.currentLevel - 1;
+        this.key = this.solutionList[curLvl];
+    };
+    this.setCurrentLevel = function () {
+        if (this.currentLevel === 4) {
+            this.resetAllImages();
+            this.restartAllLevels();
         }
-
-    };
-
-    // Estableix l'últim objecte figura de l'array com a solució del joc.
-    this.setKey = function (lvl) {
-
-        var lastFigure = lvl.figures.length - 1;
-        key = lvl.figures[lastFigure];
-
-    };
-
-    // Funció que canvia al següent nivell. En cas d'estar a l'últim, torna
-    // a començar pel primer.
-    this.setCurrentLevel = function setCurrentLevel() {
-
-        this.currentLevel < 4 ?
-                this.currentLevel++ :
+        this.currentLevel < 4 ? 
+                this.currentLevel++ : 
                 this.currentLevel = 1;
-
+        this.completedLevel = false;
     };
+    this.resetAllImages = function () {
+        var playerNodeList = document.querySelectorAll('.figure');
+        var figures = this.figureList;
+        
+        for (var counter = 0;
+            counter < figures.length;
+            counter++) {
+            
+            if(!playerNodeList[counter].hasChildNodes()) {
+                var newImageChild = document.createElement('img');
 
-};
+                newImageChild.setAttribute('id', figures[counter].name);
+                newImageChild.setAttribute('src', figures[counter].src);
 
-var DndHandler = function () {
+                playerNodeList[counter].appendChild(newImageChild);
+            }
+            
+        }
+        
+    }
+    this.resetImage = function(parent, id, src) {
+        var newImageNode = document.createElement('img');
+        newImageNode.setAttribute('id', id);
+        newImageNode.setAttribute('src', src);
+        parent.appendChild(newImageNode);
+    }
+    this.restartAllLevels = function () {
+        var systemNodeList = document.querySelectorAll('#b04');
+        
+        for (var counter = 0;
+            counter < this.solutionList.length;
+            counter++) {
+                
+            var imgToRemove = systemNodeList[counter].getElementsByTagName('img')[0];
+            systemNodeList[counter].removeChild(imgToRemove);
+            
+        }
+        
+    }
+    this.loadLevel = function () {
+        var nodeList = document.querySelectorAll('.level');
+        var currLvl = this.currentLevel - 1;
+        console.log('loading current level: ' + this.currentLevel);
+        for (var counter = 0; 
+            counter < (this.solutionList.length); 
+            counter++) {
+                
+            console.log('node to hide: ' + nodeList[counter].id);
+            var nodeToHide = nodeList[counter];
+            nodeToHide.classList.add('hidden');
+            
+        }
+        nodeList[currLvl].classList.remove('hidden');
+    }
+}
 
-    var figureToCopy = "anyNodeElement";
-    this.figureToCopy = figureToCopy;
+function FigureSet() {
+    var folder = 'img/figure/';
+    var ext = '.png';
+    this.circle = new Figure(folder, "circle", ext);
+    this.square = new Figure(folder, "square", ext);
+    this.triangle = new Figure(folder, "triangle", ext);
+    this.diamond = new Figure(folder, "diamond", ext);
+}
 
+function FigureGame() {
+    this.gameHandler = new Game();
     // FUNCIONS MANEGADORES DE L'API DRAG'N'DROP
     this.playerDragStart = function (e) { // AL COGER UN ELEMENTO DRAGNDROP
         // e.target o this és l'origen
         if (!e.target.classList.contains('pick')) {
             e.target.classList.add('pick');
-            this.figureToCopy = e.target;
+            figureGame.figureToCopy = e.target;
         }
 
         console.log(e.target.id + ' drag start: ' + e.target.classList.toString()
-                + '; img id=' + this.figureToCopy.id);
+                + '; img id=' + figureGame.figureToCopy.id);
     };
 
     this.playerDragEnd = function (e) { // LO QUE LE PASA AL ELEMENTO QUE HAS COGIDO CUANDO LO SUELTAS
@@ -170,9 +133,10 @@ var DndHandler = function () {
 
     this.systemDragEnter = function (e) { // AL ENTRAR EN EL "TERRITORIO" DE OTRO ELEMENTO DRAGNDROP
         //e.target o this és el desti
-        if (e.target.childNodes.length === 0) {
+        if (e.target.id === 'b04') {
             e.target.classList.add('over'); // le pone la clase over al div para q el css haga algo
-            console.log('drag enter ' + e.target.id + ': ' + e.target.classList.toString());
+            console.log('drag enter ' + e.target.id + ': ' + e.target.classList.toString() + 
+                    '; current level: ' + figureGame.gameHandler.currentLevel);
         }
 
     };
@@ -180,7 +144,7 @@ var DndHandler = function () {
     this.systemDragOver = function (e) { // AL PASAR POR ENCIMA DE OTRO ELEMENTO DRAGNDROP
         // e.target o this és el desti
 
-        if (e.target.classList.contains("systemBox")) {
+        if (e.target.classList.contains("system")) {
             if (e.preventDefault) {
                 // evita otras movidas del comportamiento de la página, como los hipervínculos 
                 // (sino alomejor al pasar por encima te envia para otra página, y no queremos eso D: )
@@ -189,7 +153,7 @@ var DndHandler = function () {
 
             e.dataTransfer.dropEffect = 'move';
             console.log(e.target.id + ' drag over: ' + e.target.classList.toString() + '; ' +
-                    this.figureToCopy.id + ' to copy');
+                    figureGame.figureToCopy.id + ' to copy');
             return false;
         }
     };
@@ -203,57 +167,26 @@ var DndHandler = function () {
 
     this.systemDrop = function (e) { // LO QUE LE PASA AL ELEMENTO EN EL CUAL SUELTAS LA MOVIDA
         //e.target o this és el desti
+        
+        if ((e.target.id === 'b04') &&
+                (figureGame.figureToCopy.id === figureGame.gameHandler.key.name)) { // si el destino no tiene una imagen asociada
 
-        //console.log('data: ' + e.dataTransfer.getData('text'));
-        if (e.target.childNodes.length <= 0 &&
-                this.figureToCopy.src === this.game.key) { // si el destino no tiene una imagen asociada
-
-            e.target.appendChild(document.getElementById(this.figureToCopy));
-            e.target.childNodes[0].setAttribute("draggable", false);
-            //this.setAttribute("src", e.dataTransfer.getData('text'));
+            console.log(figureGame.figureToCopy);
+            figureGame.figureToCopy.classList.remove('pick');
+            e.target.appendChild(figureGame.figureToCopy);
+            //e.target.childNodes[1].setAttribute("draggable", false);
+            //e.target.childNodes[0].setAttribute("draggable", false);
 
             if (e.stopPropagation) {
                 e.stopPropagation();
             }
 
+            figureGame.gameHandler.completedLevel = true;
+
             console.log('drop on ' + e.target.id + ': ' + e.target.classList.toString());
-            document.getElementById("newGame").setAttribute("type", "button");
         }
 
         e.target.classList.remove('over');
 
     };
-
-    // Afegeix els handlers com a listeners d'HTML5
-    this.setFigures = function (items) {
-
-        [].forEach.call(items, function (item) {
-            item.addEventListener('dragstart', this.playerDragStart, false);
-            item.addEventListener('dragend', this.playerDragEnd, false);
-            console.log(item.id + ' set');
-        });
-
-    };
-
-    // Afegeix els handlers com a listeners d'HTML5
-    this.setSystemBoxes = function (items) {
-
-        /*document.getElementById("newGame")
-         .addEventListener("onclick", this.game.loadLevel(), false);*/
-
-        [].forEach.call(items, function (item) {
-            item.addEventListener('dragenter', this.systemDragEnterHandler, false);
-            item.addEventListener('dragover', this.systemDragOverHandler, false);
-            item.addEventListener('dragleave', this.systemDragLeaveHandler, false);
-            item.addEventListener('drop', this.systemDropHandler, false);
-            console.log(item.id + ' set');
-        });
-
-    };
-
-};
-
-var FigureGame = function () {
-    this.game = new Game(new FigureSet());
-    this.dndHandler = new DndHandler();
-};
+}

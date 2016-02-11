@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Juga!</title>
+        <meta charset="UTF-8">
+        <meta name="author" content="mor">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="shortcut icon" href="img/icon/favicon.ico">
+        <script type="text/javascript" src="js/classes.js"></script>
+        <script type="text/javascript" src="js/functions.js"></script>
+    </head>
+    <body onload="main()">
+        <div id="timeCounter" >
+            <label>Temps: </label><br>
+            <span id="time" >20</span>
+        </div>
+        <div id="player" >
+            <div class="figure" >
+                <img id="circle" src="img/figure/circle.png" draggable="true" >
+            </div>
+            <div class="figure" >
+                <img id="square" src="img/figure/square.png" draggable="true" >
+            </div>
+            <div class="figure" >
+                <img id="triangle" src="img/figure/triangle.png" draggable="true" >
+            </div>
+            <div class="figure" >
+                <img id="diamond" src="img/figure/diamond.png" draggable="true" >
+            </div>
+            <button onclick="nextLevel()" >Següent nivell</button>
+        </div>
+        <div id="game" >
+            <div id="level01" class="level hidden" >
+                <div id="b01" class="system" >
+                    <img src="img/figure/circle.png">
+                </div>
+                <div id="b02" class="system" >
+                    <img src="img/figure/square.png">
+                </div>
+                <div id="b03" class="system" >
+                    <img src="img/figure/triangle.png">
+                </div>
+                <div id="b04" class="system" >
+                    
+                </div>
+            </div>
+            <div id="level02" class="level hidden" >
+                <div id="b01" class="system" >
+                    <img src="img/figure/circle.png">
+                </div>
+                <div id="b02" class="system" >
+                    <img src="img/figure/circle.png">
+                </div>
+                <div id="b03" class="system" >
+                    <img src="img/figure/circle.png">
+                </div>
+                <div id="b04" class="system" >
+                    
+                </div>
+            </div>
+            <div id="level03" class="level hidden" >
+                <div id="b01" class="system" >
+                    <img src="img/figure/square.png">
+                </div>
+                <div id="b02" class="system" >
+                    <img src="img/figure/square.png">
+                </div>
+                <div id="b03" class="system" >
+                    <img src="img/figure/triangle.png">
+                </div>
+                <div id="b04" class="system" >
+                    
+                </div>
+            </div>
+            <div id="level04" class="level hidden" >
+                <div id="b01" class="system" >
+                    <img src="img/figure/diamond.png">
+                </div>
+                <div id="b02" class="system" >
+                    <img src="img/figure/square.png">
+                </div>
+                <div id="b03" class="system" >
+                    <img src="img/figure/diamond.png">
+                </div>
+                <div id="b04" class="system" >
+                    
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
