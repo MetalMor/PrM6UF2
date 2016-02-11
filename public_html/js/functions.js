@@ -5,26 +5,19 @@
  * @author mor
  */
 
-function main() {
-    
-    figureGame = new FigureGame();
-    
-    var playerItems = document.querySelectorAll('.figure');
-    var systemItems = document.querySelectorAll('#b04');
-    
-    setFigures(playerItems);
-    setSystemBoxes(systemItems);
-    
-    nextLevel(figureGame);
-    
+function timeCounter() {
+    timeCount++;
+    document.getElementById('time').innerHTML = timeCount;
 }
 
 function nextLevel() {
     var handler = figureGame.gameHandler;
     if(handler.completedLevel) {
+        //handler.timeCounter[handler.currentLevel] = timeCount;
         handler.setCurrentLevel();
         handler.setKey();
         handler.loadLevel();
+        //timeCount = 0;
     }
 }
 
@@ -52,4 +45,22 @@ function setSystemBoxes(items) {
         console.log(item.id + ' set');
     });
 
+}
+
+function main() {
+    
+    figureGame = new FigureGame();
+    
+    var playerItems = document.querySelectorAll('.figure');
+    var systemItems = document.querySelectorAll('#b04');
+    
+    //timeCount = 0;
+    
+    //window.setInterval(timeCounter(), 1000);
+    
+    setFigures(playerItems);
+    setSystemBoxes(systemItems);
+    
+    nextLevel(figureGame);
+    
 }

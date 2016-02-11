@@ -17,6 +17,12 @@ function Game() {
     this.completedLevel = true;
     this.key = "any";
     this.figures = new FigureSet();
+    this.timeCounter = [
+        0,
+        0,
+        0,
+        0
+    ]
     this.figureList = [
         this.figures.circle,
         this.figures.square,
