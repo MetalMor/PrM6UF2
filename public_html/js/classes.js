@@ -22,13 +22,16 @@ function Game() {
         0,
         0,
         0
-    ]
+    ];
+    this.figureList = document.getElementById('player');
+    /*
     this.figureList = [
         this.figures.circle,
         this.figures.square,
         this.figures.triangle,
         this.figures.diamond
     ];
+    */
     this.solutionList = [
         this.figures.diamond,
         this.figures.circle,
@@ -39,43 +42,68 @@ function Game() {
         var curLvl = this.currentLevel - 1;
         this.key = this.solutionList[curLvl];
     };
+    this.setTime = function () {
+        this.timeCounter[this.currentLevel - 1] = timeCount;
+    }
     this.setCurrentLevel = function () {
-        if (this.currentLevel === 4) {
+        if (this.currentLevel == 4) {
             this.restartAllLevels();
         }
+        this.resetAllImages();
         this.currentLevel < 4 ? 
                 this.currentLevel++ : 
                 this.currentLevel = 1;
-        this.resetAllImages();
+        this.setTime();
         this.completedLevel = false;
     };
     this.resetAllImages = function () {
-        var playerNodeList = document.querySelectorAll('.figure');
-        var figures = this.figureList;
+        var imagesDiv = document.getElementsByClassName('figure');
+        
+        for (var counter = 0;
+                counter < 4;
+                counter++) {
+            var currImage = this.figureList[counter];
+            imagesDiv[counter].childNodes[1] = this.resetImage(currImage.name, currImage.src);
+        }
+        
+        /*
+        while (playerNodeList[counter].firstChild) {
+            playerNodeList[counter].removeChild(playerNodeList[counter].firstChild);
+            counter++;
+        }
+        
+        for (var x in figures) {
+            var newImg = document.createElement('img');
+            newImg.setAttribute('id', figures[x].name);
+            newImg.setAttribute('src', figures[x].src);
+            playerNodeList[x].appendChild(newImg);
+        }
         
         for (var counter = 0;
             counter < figures.length;
             counter++) {
+                
+            var tmpNode = playerNode[counter];
+            var _figure = this.figureList[counter];
             
-            var tmpNode = playerNodeList[counter];
-            
-            if(playerNodeList.length < 4) {
+            if(playerNode.length < 4) {
                 var newImageChild = document.createElement('img');
 
-                newImageChild.setAttribute('id', this.figureList[counter].name);
-                newImageChild.setAttribute('src', this.figureList[counter].src);
+                newImageChild.setAttribute('id', _figure.name);
+                newImageChild.setAttribute('src', _figure.src);
 
-                playerNodeList[counter].appendChild(newImageChild);
+                tmpNode.appendChild(newImageChild);
             }
             
-        }
+        }*/
         
     }
-    this.resetImage = function(parent, id, src) {
+    this.resetImage = function(id, src) {
         var newImageNode = document.createElement('img');
         newImageNode.setAttribute('id', id);
         newImageNode.setAttribute('src', src);
-        parent.appendChild(newImageNode);
+        newImageNode.setAttribute('draggable', true);
+        return newImageNode;
     }
     this.restartAllLevels = function () {
         var systemNodeList = document.querySelectorAll('#b04');
@@ -123,6 +151,11 @@ function FigureSet() {
 
 function FigureGame() {
     this.gameHandler = new Game();
+    this.correctDrop = function () {
+        if(figureGame.figureToCopy.id === figureGame.gameHandler.key.name)
+            return true;
+        return false;
+    }
     // FUNCIONS MANEGADORES DE L'API DRAG'N'DROP
     this.playerDragStart = function (e) { // AL COGER UN ELEMENTO DRAGNDROP
         // e.target o this és l'origen
@@ -182,7 +215,7 @@ function FigureGame() {
         //e.target o this és el desti
         
         if ((e.target.id === 'b04') &&
-                (figureGame.figureToCopy.id === figureGame.gameHandler.key.name)) { // si el destino no tiene una imagen asociada
+                figureGame.correctDrop()) {
 
             console.log(figureGame.figureToCopy);
             figureGame.figureToCopy.classList.remove('pick');
@@ -197,6 +230,8 @@ function FigureGame() {
             figureGame.gameHandler.completedLevel = true;
 
             console.log('drop on ' + e.target.id + ': ' + e.target.classList.toString());
+        } else if (!figureGame.correctDrop()) {
+            timeCount += 5;
         }
 
         e.target.classList.remove('over');
