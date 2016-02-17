@@ -41,12 +41,12 @@ function Game() {
     };
     this.setCurrentLevel = function () {
         if (this.currentLevel === 4) {
-            this.resetAllImages();
             this.restartAllLevels();
         }
         this.currentLevel < 4 ? 
                 this.currentLevel++ : 
                 this.currentLevel = 1;
+        this.resetAllImages();
         this.completedLevel = false;
     };
     this.resetAllImages = function () {
@@ -57,11 +57,13 @@ function Game() {
             counter < figures.length;
             counter++) {
             
-            if(!playerNodeList[counter].hasChildNodes()) {
+            var tmpNode = playerNodeList[counter];
+            
+            if(playerNodeList.length < 4) {
                 var newImageChild = document.createElement('img');
 
-                newImageChild.setAttribute('id', figures[counter].name);
-                newImageChild.setAttribute('src', figures[counter].src);
+                newImageChild.setAttribute('id', this.figureList[counter].name);
+                newImageChild.setAttribute('src', this.figureList[counter].src);
 
                 playerNodeList[counter].appendChild(newImageChild);
             }
@@ -77,12 +79,15 @@ function Game() {
     }
     this.restartAllLevels = function () {
         var systemNodeList = document.querySelectorAll('#b04');
+        var solutions = this.solutionList;
         
+        console.log('restarting levels');
         for (var counter = 0;
-            counter < this.solutionList.length;
+            counter < solutions.length;
             counter++) {
-                
+            
             var imgToRemove = systemNodeList[counter].getElementsByTagName('img')[0];
+            console.log('removing img: ' + imgToRemove.src);
             systemNodeList[counter].removeChild(imgToRemove);
             
         }
@@ -91,9 +96,11 @@ function Game() {
     this.loadLevel = function () {
         var nodeList = document.querySelectorAll('.level');
         var currLvl = this.currentLevel - 1;
+        var solutions = this.solutionList;
+        
         console.log('loading current level: ' + this.currentLevel);
         for (var counter = 0; 
-            counter < (this.solutionList.length); 
+            counter < solutions.length; 
             counter++) {
                 
             console.log('node to hide: ' + nodeList[counter].id);
