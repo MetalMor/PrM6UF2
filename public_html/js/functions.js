@@ -6,18 +6,18 @@
  */
 
 function timeCounter() {
-    timeCount++;
-    return timeCount;
+    if(!window.pause)
+        window.timeCount++;
+    return window.timeCount;
 }
 
 function nextLevel() {
     var handler = figureGame.gameHandler;
     if(handler.completedLevel) {
-        handler.timeCounter[handler.currentLevel] = timeCount;
         handler.setCurrentLevel();
         handler.setKey();
         handler.loadLevel();
-        timeCount = 0;
+        handler.pause();
     }
 }
 
@@ -54,16 +54,17 @@ function main() {
     var playerItems = document.querySelectorAll('.figure');
     var systemItems = document.querySelectorAll('#b04');
     
-    timeCount = 0;
-    var tc = timeCounter;
+    window.timeCount = 0;
+    window.tc = timeCounter;
+    window.pause = true;
     
-    window.setInterval(function() {
-        document.querySelector('#time').innerHTML = tc();
+    window.intervalRef = window.setInterval(function() {
+        document.querySelector('#time').innerHTML = window.tc();
     }, 1000);
     
     setFigures(playerItems);
     setSystemBoxes(systemItems);
     
-    nextLevel(figureGame);
+    nextLevel();
     
 }
