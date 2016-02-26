@@ -47,6 +47,22 @@ function setSystemBoxes(items) {
 
 }
 
+function validateBrowser() {
+    var isSupported;
+    var body = document.getElementsByTagName('body')[0];
+    if (navigator.userAgent.indexOf("Chrome") > -1) {
+        alert('supported');
+        isSupported = 'supported';
+    } else {
+        alert('.notSupported');
+        isSupported = 'notSupported';
+    }
+    var nodeList = body.getElementsByClassName(isSupported);
+    for (var node in nodeList) {
+        nodeList[node].classList.remove('hidden');
+    }
+}
+
 function main() {
     
     figureGame = new FigureGame();

@@ -3,19 +3,26 @@
 <html>
     <head>
         <title>Juga!</title>
+        <!-- Meta -->
         <meta charset="UTF-8">
         <meta name="author" content="mor">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Style -->
         <link rel="stylesheet" href="css/style.css">
         <link rel="shortcut icon" href="img/icon/favicon.ico">
+        <!-- Scripts -->
         <script type="text/javascript" src="js/classes.js"></script>
         <script type="text/javascript" src="js/functions.js"></script>
+        <!-- Webfonts -->
+        <link href='https://fonts.googleapis.com/css?family=Shadows+Into+Light' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Mouse+Memoirs' rel='stylesheet' type='text/css'>
     </head>
     <body onload="main()">
         <div id="timeCounter" >
             <label>Temps: </label><br>
             <span id="time" ></span>
         </div>
+        <!-- Figures del jugador -->
         <div id="player" >
             <div class="figure" id="divCircle" >
                 <img id="circle" src="img/figure/circle.png" draggable="true" >
@@ -31,7 +38,9 @@
             </div>
             <button onclick="nextLevel()" >Següent nivell</button>
         </div>
+        <!-- Figures del joc -->
         <div id="game" >
+            <!-- Nivell 1 -->
             <div id="level01" class="level hidden" >
                 <div id="b01" class="system" >
                     <img src="img/figure/circle.png">
@@ -46,6 +55,7 @@
                     <!-- Element img a insertar mitjançant drag and drop -->
                 </div>
             </div>
+            <!-- Nivell 2 -->
             <div id="level02" class="level hidden" >
                 <div id="b01" class="system" >
                     <img src="img/figure/circle.png">
@@ -60,6 +70,7 @@
                     <!-- Element img a insertar mitjançant drag and drop -->
                 </div>
             </div>
+            <!-- Nivell 3 -->
             <div id="level03" class="level hidden" >
                 <div id="b01" class="system" >
                     <img src="img/figure/square.png">
@@ -74,6 +85,7 @@
                     <!-- Element img a insertar mitjançant drag and drop -->
                 </div>
             </div>
+            <!-- Nivell 4 -->
             <div id="level04" class="level hidden" >
                 <div id="b01" class="system" >
                     <img src="img/figure/diamond.png">
@@ -88,7 +100,8 @@
                     <!-- Element img a insertar mitjançant drag and drop -->
                 </div>
             </div>
-            <div id="timeCount" class="hidden" >
+            <!-- Recompte de puntuació (temps) -->
+            <div id="timeCount" class="hidden stroke" >
                 <h1>Enhorabona! Has acabat el joc. Clica a "Següent nivell" per tornar a començar.</h1>
                 <label>Level 01: </label><div id="time01" class="timeCount" ></div>
                 <label>Level 02: </label><div id="time02" class="timeCount" ></div>

@@ -22,6 +22,26 @@ div.system {
     display: inline;
 }
 
+h1 {
+    font-family: 'Mouse Memoirs', sans-serif;
+    font-size: xx-large;
+}
+
+p {
+    font-family: 'Shadows Into Light', cursive;
+    font-size: larger;
+}
+
+/* STROKE CHETO MOLÓN ENCONTRADO EN SAN GOOGLE! :D */
+.stroke {
+    color: white;
+    text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
+}
+
 .hidden {
     display: none;
 }

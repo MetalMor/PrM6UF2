@@ -3,18 +3,31 @@
 <html>
     <head>
         <title>Drag'n'Drop - Joel G. Fernándeath</title>
+        <!-- Meta -->
         <meta charset="UTF-8">
         <meta name="author" content="mor">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Style -->
         <link rel="stylesheet" href="css/style.css">
         <link rel="shortcut icon" href="img/icon/favicon.ico">
-        <script type="text/javascript" src="js/functions.js"></script>
+        <!-- Webfonts -->
+        <link href='https://fonts.googleapis.com/css?family=Shadows+Into+Light' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Mouse+Memoirs' rel='stylesheet' type='text/css'>
     </head>
-    <body>
-        <h1>JOC DE FIGURES: troba la figura correcta en cada cas</h1>
-        <form action='game.html'>
-            <label>Clica al botó per començar:</label><br>
-            <input type="submit" value="Començar" />
+    <body onload="validateBrowser()">
+        <h1 class="stroke">JOC DE FIGURES: troba la figura correcta en cada cas</h1>
+        <p id="notSupported" class="hidden stroke">
+            Sisplau, utilitza el navegador Google Chrome per obrir aquesta aplicació.
+        </p>
+        <p id="supported" class="hidden stroke">
+            TODO instruccions
+        </p>
+        <form id="supported" action='game.html' class="hidden" >
+                <label class="stroke">Clica al botó per començar:</label><br>
+                <input type="submit" value="Començar" />
         </form>
+        <!-- Scripts -->
+        <script type="text/javascript" src="js/classes.js"></script>
+        <script type="text/javascript" src="js/functions.js"></script>
     </body>
 </html>
