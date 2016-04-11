@@ -2,6 +2,9 @@
     Created on : 04-feb-2016, 10:21:16
     Author     : mor
 */
+body {
+    background-color: lightgrey;
+}
 div div img {
     width: auto;
     height: auto;

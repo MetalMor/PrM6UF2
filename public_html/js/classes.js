@@ -43,6 +43,7 @@ function Game() {
         clearInterval(window.intervalRef);
         document.getElementById('timeCount').classList.remove("hidden");
         var nodeList = document.getElementsByClassName('timeCount');
+        var rubbish = count.shift();
         for (var level in count) {
            nodeList[level].innerHTML = count[level].toString();
         }

@@ -20,9 +20,11 @@
     <body onload="main()">
         <div id="timeCounter" >
             <label>Temps: </label><br>
-            <span id="time" ></span>
+            <span id="time"></span>
         </div>
         <!-- Figures del jugador -->
+        <table>
+            <tr>
         <div id="player" >
             <div class="figure" id="divCircle" >
                 <img id="circle" src="img/figure/circle.png" draggable="true" >
@@ -38,7 +40,9 @@
             </div>
             <button onclick="nextLevel()" >Següent nivell</button>
         </div>
+            </tr>
         <!-- Figures del joc -->
+        <tr>
         <div id="game" >
             <!-- Nivell 1 -->
             <div id="level01" class="level hidden" >
@@ -100,6 +104,8 @@
                     <!-- Element img a insertar mitjançant drag and drop -->
                 </div>
             </div>
+            </tr>
+            </table>
             <!-- Recompte de puntuació (temps) -->
             <div id="timeCount" class="hidden stroke" >
                 <h1>Enhorabona! Has acabat el joc. Clica a "Següent nivell" per tornar a començar.</h1>
